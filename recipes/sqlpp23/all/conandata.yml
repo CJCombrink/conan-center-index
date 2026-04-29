@@ -1,0 +1,4 @@
+sources:
+  "0.69":
+    url: "https://github.com/rbock/sqlpp23/archive/0.69.tar.gz"
+    sha256: "ff4a31f4f110623781e3fd5c49846f76bb758f0c877cb15395c50cfad7a71253"
