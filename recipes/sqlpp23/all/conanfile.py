@@ -1,7 +1,7 @@
 from conan import ConanFile
 from conan.errors import ConanInvalidConfiguration
 from conan.tools.build import check_min_cppstd
-from conan.tools.files import get, copy
+from conan.tools.files import get, copy, replace_in_file
 from conan.tools.layout import basic_layout
 from conan.tools.scm import Version
 import os
@@ -55,8 +55,14 @@ class Sqlpp23Conan(ConanFile):
 
     def package(self):
         copy(self, pattern="LICENSE", dst=os.path.join(self.package_folder, "licenses"), src=self.source_folder)
-        copy(self, "*.h", dst=os.path.join(self.package_folder, "include"), src=os.path.join(self.source_folder, "include"))
-        copy(self, "*", dst=os.path.join(self.package_folder, "bin"), src=os.path.join(self.source_folder, "scripts"))
+        sources = copy(self, "*.h", dst=os.path.join(self.package_folder, "include"), src=os.path.join(self.source_folder, "include"))
+        other = copy(self, "*", dst=os.path.join(self.package_folder, "bin"), src=os.path.join(self.source_folder, "scripts"))
+
+        for file in sources:
+            replace_in_file(self, file, 'namespace sqlpp {', 'namespace sqlpp23 {', strict=False)
+            replace_in_file(self, file, 'sqlpp::', 'sqlpp23::', strict=False)
+        for file in other:
+            replace_in_file(self, file, 'sqlpp::', 'sqlpp23::', strict=False)
 
     def package_info(self):
         self.cpp_info.libdirs = []

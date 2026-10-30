@@ -1,6 +1,6 @@
 #include <sqlpp23/sqlpp23.h>
 
 int main() {
-    select(sqlpp::value(false).as(sqlpp::alias::a));
+    select(sqlpp23::value(false).as(sqlpp23::alias::a));
     return EXIT_SUCCESS;
 }
